@@ -17,8 +17,8 @@ def init():
     print("Executing init() method...")
     print("Python version: " + str(sys.version) + ", keras version: " + K.__version__)
     # Load the model 
-    model = K.models.load_model('azureml-models/kerasmodel/8/kerasmodel.pkl')
-    #model = K.models.load_model('kerasmodel.pkl')
+    #model = K.models.load_model('azureml-models/kerasmodel3/1/kerasmodel3.pkl')
+    model = K.models.load_model('kerasmodel3.pkl')
     
     return
 
@@ -27,7 +27,20 @@ def predict(model, img):
     x = np.expand_dims(x, axis=0)
     x = preprocess_input(x)
     preds = model.predict_classes(x)
-    return preds[0]
+    y = model.predict(x)[0]
+    y = np.expand_dims(y, axis=-1)
+    print(y)
+    b = []
+    a = y[0]
+    b.append(np.float(a))
+    a = y[1]
+    b.append(np.float(a))
+    a = y[2]
+    b.append(np.float(a))
+    a = y[3]
+    b.append(np.float(a))
+    b.append(preds[0])
+    return b
 
 def run(inputString):
     
@@ -58,8 +71,12 @@ def run(inputString):
     img = image.load_img(img_buffer,target_size=(224, 224))
     #img = json.loads(inputString)['data']
     preds = predict(model, img)
-    LABELS = ["Non Rust", "Rust"]
-    resp = LABELS[preds]
+    LABELS = ["Category A","Category B","Category C","Category D"]
+    resp = LABELS[preds[-1]]
+    responses.append(preds[0])
+    responses.append(preds[1])
+    responses.append(preds[2])
+    responses.append(preds[3])
     responses.append(resp)
     return json.dumps(responses)
     
