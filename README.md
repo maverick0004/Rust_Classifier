@@ -1,1 +1,2 @@
 # Rust_Classifier
+The notebooks contain code for developing a neural network for classifying an image as none and different types of corrosion (Pitting, Crevice, Galvanic and Uniform). The developed model was deployed on Azure. The notebook also has the code for model deployment in an Azure container and how it can be used to make predictions have been made into a website see https://github.com/maverick0004/Rust-Website
